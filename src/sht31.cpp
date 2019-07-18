@@ -8,7 +8,6 @@
 #define PT_USE_SEM
 #include <Adafruit_SHT31.h>
 #include <Wire.h>
-#include <pt.h>
 
 Adafruit_SHT31 sht31 = Adafruit_SHT31(&Wire);
 
@@ -30,13 +29,17 @@ void coroutine_sht31() {
   auto t = sht31.readTemperature();
   auto h = sht31.readHumidity();
 
-  static char buffer[16];
+  static char buffer[256];
   if (!isnan(t) && client.connected()) {
-    sprintf(buffer, "%f", t);
-    client.publish("niubix/temperature", buffer);
+    sprintf(buffer,
+            "{\"type\": \"temperature\", \"value\": %0.1f, \"mac\": \"%s\"}", t,
+            NIUBIX_MAC_ADDRESS.c_str());
+    client.publish("niubix/temperature", buffer, 1);
   }
   if (!isnan(h) && client.connected()) {
-    sprintf(buffer, "%f", h);
-    client.publish("niubix/humidity", buffer);
+    sprintf(buffer,
+            "{\"type\": \"humidity\", \"value\": %0.1f, \"mac\": \"%s\"}", h,
+            NIUBIX_MAC_ADDRESS.c_str());
+    client.publish("niubix/humidity", buffer, 1);
   }
 }
