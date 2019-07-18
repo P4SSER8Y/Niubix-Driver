@@ -18,3 +18,7 @@
 
 #define SHT31_ADDR 0x44
 #define SHT31_DELAY 5000
+
+#define DEEP_SLEEP_TIME 30
+
+extern String NIUBIX_MAC_ADDRESS;

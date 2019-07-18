@@ -3,12 +3,15 @@
 
 #include <ESP8266WiFi.h>
 
+String NIUBIX_MAC_ADDRESS = "";
+
 void config_wifi() {
   WiFi.mode(WIFI_STA);
 
   String hostname = WIFI_HOSTNAME_PREFIX;
   hostname += "-";
-  auto t = WiFi.macAddress();
+  NIUBIX_MAC_ADDRESS = WiFi.macAddress();
+  auto t = NIUBIX_MAC_ADDRESS;
   int i = 0;
   while (i < t.length())
     if (t[i] == ':')
